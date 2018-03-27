@@ -4,16 +4,12 @@ from PIL import Image, ImageDraw
 
 GENEFILE = "ncbiGene.txt"
 FILENAME = "KM034562v1.fa"
-VERSION = 3
+VERSION = 4
 OUTPUT_FOLDER = "out/"
 
 class Nucleotide:
     def __repr__(self):
         return self.character
-
-    character = ""
-    connectsTo = ""
-    colour = "rgb(255,255,255)"
 
     def __init__(self, character, connectsTo, colour):
         self.character = character
@@ -21,9 +17,9 @@ class Nucleotide:
         self.colour = colour
 
 NUCLEOTIDES = {
-    'A': Nucleotide('A', 'T', "rgb(200,0,0)"),
-    'T': Nucleotide('T', 'A', "rgb(200,100,0)"),
-    'G': Nucleotide('G', 'C', "rgb(0,0,200)"),
+    'A': Nucleotide('A', 'T', "rgb(233,0,0)"),
+    'T': Nucleotide('T', 'A', "rgb(200,7,0)"),
+    'G': Nucleotide('G', 'C', "rgb(0,0,2)"),
     'C': Nucleotide('C', 'G', "rgb(0,100,200)")
 }
 
