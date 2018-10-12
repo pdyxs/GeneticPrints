@@ -8,7 +8,7 @@ from genetics import colours
 
 GENEFILE = "ncbiGene.txt"
 SEQUENCE_FILE = "KM034562v1.fa"
-VERSION = 4
+VERSION = 5
 OUTPUT_FOLDER = "out/"
 
 def readSequenceString(filename, commentStr):
@@ -33,7 +33,7 @@ def getWidth(sequence):
     extents = [0,0]
     pos = 0
     for count, gene in enumerate(sequence.genes):
-        width = gene.width()
+        width = gene.width() * 3
         overlap = 0
         if count > 0:
             overlap = max(0, sequence.genes[count - 1].transcriptionRegion[1] - gene.transcriptionRegion[0])
@@ -79,16 +79,36 @@ def drawSequence(draw,seq,startPos):
             pos = (pos[0] + (1 if i % 2 == 0 else -1), pos[1])
         while spos < gene.codingRegion[1]:
             if gene.isExon(spos):
+                dx = (1 if i % 2 == 0 else -1)
                 draw.point([(pos[0],pos[1]-1)], colours.inSequence(seq, spos))
                 draw.point([(pos[0],pos[1])], colours.inSequence(seq, spos + 1))
                 draw.point([(pos[0],pos[1]+1)], colours.inSequence(seq, spos + 2))
+                draw.point([(pos[0]+dx,pos[1]-1)], colours.inSequence(seq, spos))
+                draw.point([(pos[0]+dx,pos[1])], colours.inSequence(seq, spos + 1))
+                draw.point([(pos[0]+dx,pos[1]+1)], colours.inSequence(seq, spos + 2))
+                draw.point([(pos[0]+2*dx,pos[1]-1)], colours.inSequence(seq, spos))
+                draw.point([(pos[0]+2*dx,pos[1])], colours.inSequence(seq, spos + 1))
+                draw.point([(pos[0]+2*dx,pos[1]+1)], colours.inSequence(seq, spos + 2))
                 colour = colours.CODON_COLOURS[seq.codonAt(spos).symbol]
-                draw.point([(pos[0],pos[1]-2)], colour)
-                draw.point([(pos[0],pos[1]-3)], colour)
-                draw.point([(pos[0],pos[1]+2)], colour)
-                draw.point([(pos[0],pos[1]+3)], colour)
+                # draw.point([(pos[0],pos[1]-2)], colour)
+                # draw.point([(pos[0],pos[1]-3)], colour)
+                # draw.point([(pos[0],pos[1]+2)], colour)
+                # draw.point([(pos[0],pos[1]+3)], colour)
+                # draw.point([(pos[0]+dx,pos[1]+2)], colour)
+                # draw.point([(pos[0]+dx,pos[1]+3)], colour)
+                # draw.point([(pos[0]+2*dx,pos[1]+2)], colour)
+                # draw.point([(pos[0]+2*dx,pos[1]+3)], colour)
+                # draw.point([(pos[0],pos[1]-1)], colour)
+                draw.point([(pos[0],pos[1])], colour)
+                draw.point([(pos[0],pos[1]+1)], colour)
+                draw.point([(pos[0]+dx,pos[1]-1)], colour)
+                # draw.point([(pos[0]+dx,pos[1])], colour)
+                draw.point([(pos[0]+dx,pos[1]+1)], colour)
+                draw.point([(pos[0]+2*dx,pos[1]-1)], colour)
+                draw.point([(pos[0]+2*dx,pos[1])], colour)
+                # draw.point([(pos[0]+2*dx,pos[1]+1)], colour)
                 spos += 3
-                pos = (pos[0] + (1 if i % 2 == 0 else -1), pos[1])
+                pos = (pos[0] + 3 * dx, pos[1])
             else:
                 draw.point([pos], colours.inSequence(seq, spos))
                 spos += 1
